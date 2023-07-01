@@ -9,11 +9,12 @@ func ConvertSignalboxesByResponseToSignalboxes(signalboxesFromResponse []respons
 	var signalboxes []types.Signalbox
 
 	for _, signalbox := range signalboxesFromResponse {
-		var dispatcherSteamId = signalbox.DispatchedBy[0].SteamId
 		isDispatchedByPlayer := false
+		dispatcherSteamId := ""
 
-		if dispatcherSteamId != "" {
+		if len(signalbox.DispatchedBy) == 1 {
 			isDispatchedByPlayer = true
+			dispatcherSteamId = signalbox.DispatchedBy[0].SteamId
 		}
 
 		signalboxes = append(signalboxes, types.Signalbox{
