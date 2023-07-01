@@ -1,0 +1,2 @@
+### List all signalboxes for server
+GET https://panel.simrail.eu:8084/stations-open?serverCode=de1
