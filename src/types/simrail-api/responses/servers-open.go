@@ -1,6 +1,6 @@
 package responses
 
-type ServerFromServersOpenResponse struct {
+type OpenServers struct {
 	ServerCode   string `json:"ServerCode"`
 	ServerName   string `json:"ServerName"`
 	ServerRegion string `json:"ServerRegion"`
@@ -9,8 +9,8 @@ type ServerFromServersOpenResponse struct {
 }
 
 type ServersOpenResponse struct {
-	Result      bool                            `json:"result"`
-	Data        []ServerFromServersOpenResponse `json:"data"`
-	Count       int                             `json:"count"`
-	Description string                          `json:"description"`
+	Result      bool          `json:"result"`
+	Data        []OpenServers `json:"data"`
+	Count       int           `json:"count"`
+	Description string        `json:"description"`
 }

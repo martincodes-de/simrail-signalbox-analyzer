@@ -1,4 +1,4 @@
-package fetcher
+package simrail_api
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func MakeServersOpenHttpRequest() ([]responses.ServerFromServersOpenResponse, error) {
+func OpenServersQuery() ([]responses.OpenServers, error) {
 	client := http.Client{}
 	url := "https://panel.simrail.eu:8084/servers-open"
 

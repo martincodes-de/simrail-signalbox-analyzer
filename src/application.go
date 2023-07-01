@@ -2,7 +2,7 @@ package src
 
 import (
 	"fmt"
-	"github.com/martincodes-de/simrail-signalbox-analyzer/src/simrail-api/fetcher"
+	"github.com/martincodes-de/simrail-signalbox-analyzer/src/query/simrail-api"
 	"github.com/martincodes-de/simrail-signalbox-analyzer/src/types"
 	"log"
 )
@@ -11,14 +11,15 @@ type Application struct {
 }
 
 func (a Application) Run() {
+	var servers []types.Server
+	//fmt.Printf("%+v\n", servers)
+
 	fmt.Println("Application started.")
 
-	serversFromServersOpenResponse, err := fetcher.MakeServersOpenHttpRequest()
+	serversFromServersOpenResponse, err := simrail_api.OpenServersQuery()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	var servers []types.Server
 
 	for _, server := range serversFromServersOpenResponse {
 		//fmt.Printf("%s | %s | %s | active: %t | ID: %s\n", server.ServerCode, server.ServerName, server.ServerRegion, server.IsActive, server.Id)
