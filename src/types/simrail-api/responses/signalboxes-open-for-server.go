@@ -16,7 +16,7 @@ type Signalbox struct {
 	Id string `json:"id"`
 }
 
-type SignalboxesOpenForServerResponse struct {
+type SignalboxesForServerResponse struct {
 	Result      bool        `json:"result"`
 	Data        []Signalbox `json:"data"`
 	Count       int         `json:"count"`
