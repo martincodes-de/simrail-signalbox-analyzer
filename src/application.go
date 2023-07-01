@@ -1,11 +1,13 @@
 package src
 
 import (
+	json2 "encoding/json"
 	"fmt"
 	"github.com/martincodes-de/simrail-signalbox-analyzer/src/logic"
 	"github.com/martincodes-de/simrail-signalbox-analyzer/src/query/simrail-api"
 	"github.com/martincodes-de/simrail-signalbox-analyzer/src/types"
 	"log"
+	"os"
 )
 
 type Application struct {
@@ -33,5 +35,11 @@ func (a Application) Run() {
 		server.Signalboxes = convertedSignalBoxes
 	}
 
-	fmt.Printf("%+v\n", servers)
+	//fmt.Printf("%+v\n", servers)
+
+	json, _ := json2.Marshal(servers)
+	writerError := os.WriteFile("database/db.json", json, 0644)
+	if writerError != nil {
+		log.Fatal(writerError)
+	}
 }
