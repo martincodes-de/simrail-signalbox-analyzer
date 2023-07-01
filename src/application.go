@@ -17,12 +17,21 @@ func (a Application) Run() {
 
 	fmt.Println("Application started.")
 
-	openServers, err := simrail_api.OpenServersQuery()
-	if err != nil {
-		log.Fatal(err)
+	openServers, openServerErr := simrail_api.OpenServersQuery()
+	if openServerErr != nil {
+		log.Fatal(openServerErr)
 	}
 	servers = logic.ConvertOpenServersToServer(openServers)
 
 	var firstServer = servers[0]
+	signalboxes, signalboxErr := simrail_api.SignalboxesForServerQuery(firstServer.Shortname)
+	if signalboxErr != nil {
+		log.Fatal(openServerErr)
+	}
+
+	for _, signalbox := range signalboxes {
+		fmt.Printf("%+v\n", signalbox)
+		fmt.Println("--")
+	}
 
 }
