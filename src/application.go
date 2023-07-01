@@ -8,6 +8,7 @@ import (
 	"github.com/martincodes-de/simrail-signalbox-analyzer/src/types"
 	"log"
 	"os"
+	"time"
 )
 
 type Application struct {
@@ -35,30 +36,34 @@ func (a Application) Run() {
 		server.Signalboxes = convertedSignalBoxes
 	}
 
-	fileStructure := make(map[string][]types.Server)
+	existingEntries := make(map[string][]types.Server)
+	existingEntriesInBytes, readExistingDatabaseErr := os.ReadFile("database/db.json")
+	if readExistingDatabaseErr != nil {
+		log.Fatal("Cant read existing database", readExistingDatabaseErr)
+	}
 
-	data, _ := os.ReadFile("database/db.json")
-
-	if len(data) > 0 {
-		setupExistingFilestructureErr := json.Unmarshal(data, &fileStructure)
-		if setupExistingFilestructureErr != nil {
-			return
+	if len(existingEntriesInBytes) > 0 {
+		decodeExistingEntriesErr := json.Unmarshal(existingEntriesInBytes, &existingEntries)
+		if decodeExistingEntriesErr != nil {
+			log.Fatal("Cant decode existing database", decodeExistingEntriesErr)
 		}
 	}
 
-	//fmt.Printf("%+v\n", servers)
-
 	newEntry := map[string][]types.Server{
-		"tomorrow": servers,
+		time.Now().String(): servers,
 	}
 
-	for date, servers := range fileStructure {
+	for date, servers := range existingEntries {
 		newEntry[date] = servers
 	}
 
-	jsons, _ := json.Marshal(newEntry)
-	writerError := os.WriteFile("database/db.json", jsons, 0644)
+	newFileContent, encodeEntriesErr := json.Marshal(newEntry)
+	if encodeEntriesErr != nil {
+		log.Fatal("Cant encode changed database", encodeEntriesErr)
+	}
+
+	writerError := os.WriteFile("database/db.json", newFileContent, 0644)
 	if writerError != nil {
-		log.Fatal(writerError)
+		log.Fatal("Cant save changed database", writerError)
 	}
 }
