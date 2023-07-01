@@ -1,9 +1,10 @@
 package types
 
 type Signalbox struct {
-	id                              string
-	isDispatchedByPlayerWithSteamId string
-	level                           int
-	name                            string
-	shortname                       string
+	Id                   string
+	IsDispatchedByPlayer bool
+	DispatcherSteamId    string
+	DifficultyLevel      int
+	Name                 string
+	Shortname            string
 }
