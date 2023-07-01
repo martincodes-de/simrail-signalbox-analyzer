@@ -2,6 +2,7 @@ package src
 
 import (
 	"fmt"
+	"github.com/martincodes-de/simrail-signalbox-analyzer/src/logic"
 	"github.com/martincodes-de/simrail-signalbox-analyzer/src/query/simrail-api"
 	"github.com/martincodes-de/simrail-signalbox-analyzer/src/types"
 	"log"
@@ -16,19 +17,12 @@ func (a Application) Run() {
 
 	fmt.Println("Application started.")
 
-	serversFromServersOpenResponse, err := simrail_api.OpenServersQuery()
+	openServers, err := simrail_api.OpenServersQuery()
 	if err != nil {
 		log.Fatal(err)
 	}
+	servers = logic.ConvertOpenServersToServer(openServers)
 
-	for _, server := range serversFromServersOpenResponse {
-		//fmt.Printf("%s | %s | %s | active: %t | ID: %s\n", server.ServerCode, server.ServerName, server.ServerRegion, server.IsActive, server.Id)
-		servers = append(servers, types.Server{
-			Id:        server.Id,
-			IsActive:  server.IsActive,
-			Name:      server.ServerName,
-			Region:    server.ServerRegion,
-			Shortname: server.ServerCode,
-		})
-	}
+	var firstServer = servers[0]
+
 }
