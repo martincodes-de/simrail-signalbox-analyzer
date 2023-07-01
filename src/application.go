@@ -1,7 +1,7 @@
 package src
 
 import (
-	json2 "encoding/json"
+	"encoding/json"
 	"fmt"
 	"github.com/martincodes-de/simrail-signalbox-analyzer/src/logic"
 	"github.com/martincodes-de/simrail-signalbox-analyzer/src/query/simrail-api"
@@ -35,10 +35,29 @@ func (a Application) Run() {
 		server.Signalboxes = convertedSignalBoxes
 	}
 
+	fileStructure := make(map[string][]types.Server)
+
+	data, _ := os.ReadFile("database/db.json")
+
+	if len(data) > 0 {
+		setupExistingFilestructureErr := json.Unmarshal(data, &fileStructure)
+		if setupExistingFilestructureErr != nil {
+			return
+		}
+	}
+
 	//fmt.Printf("%+v\n", servers)
 
-	json, _ := json2.Marshal(servers)
-	writerError := os.WriteFile("database/db.json", json, 0644)
+	newEntry := map[string][]types.Server{
+		"tomorrow": servers,
+	}
+
+	for date, servers := range fileStructure {
+		newEntry[date] = servers
+	}
+
+	jsons, _ := json.Marshal(newEntry)
+	writerError := os.WriteFile("database/db.json", jsons, 0644)
 	if writerError != nil {
 		log.Fatal(writerError)
 	}
