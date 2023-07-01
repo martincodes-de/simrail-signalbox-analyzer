@@ -1,9 +1,9 @@
 package types
 
 type Server struct {
-	id        string
-	isActive  bool
-	name      string
-	region    string
-	shortname string
+	Id        string
+	IsActive  bool
+	Name      string
+	Region    string
+	Shortname string
 }
