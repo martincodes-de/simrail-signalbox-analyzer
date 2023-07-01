@@ -23,13 +23,14 @@ func (a Application) Run() {
 	}
 	servers = logic.ConvertOpenServersToServer(openServers)
 
-	var firstServer = servers[0]
-	signalboxes, signalboxErr := simrail_api.SignalboxesForServerQuery(firstServer.Shortname)
-	if signalboxErr != nil {
-		log.Fatal(openServerErr)
+	for _, server := range servers {
+		signalboxes, signalboxErr := simrail_api.SignalboxesForServerQuery(server.Shortname)
+		if signalboxErr != nil {
+			log.Fatal(openServerErr)
+		}
+		convertedSignalBoxes := logic.ConvertSignalboxesByResponseToSignalboxes(signalboxes)
+		server.Signalboxes = convertedSignalBoxes
 	}
 
-	convertedSignalBoxes := logic.ConvertSignalboxesByResponseToSignalboxes(signalboxes)
-
-	fmt.Printf("%+v\n", convertedSignalBoxes)
+	fmt.Printf("%+v\n", servers)
 }
