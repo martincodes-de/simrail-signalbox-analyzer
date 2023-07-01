@@ -29,9 +29,7 @@ func (a Application) Run() {
 		log.Fatal(openServerErr)
 	}
 
-	for _, signalbox := range signalboxes {
-		fmt.Printf("%+v\n", signalbox)
-		fmt.Println("--")
-	}
+	convertedSignalBoxes := logic.ConvertSignalboxesByResponseToSignalboxes(signalboxes)
 
+	fmt.Printf("%+v\n", convertedSignalBoxes)
 }
