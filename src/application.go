@@ -16,13 +16,15 @@ func (a Application) Run() {
 	var servers []types.Server
 	//fmt.Printf("%+v\n", servers)
 
-	fmt.Println("Application started.")
+	fmt.Println("Application started. Fetching servers ...")
 
 	openServers, openServerErr := simrail_api.OpenServersQuery()
 	if openServerErr != nil {
 		log.Fatal(openServerErr)
 	}
 	servers = logic.ConvertOpenServersToServer(openServers)
+
+	fmt.Println("Add signalboxes to server ...")
 
 	for index := range servers {
 		server := &servers[index]
@@ -34,5 +36,9 @@ func (a Application) Run() {
 		server.Signalboxes = convertedSignalBoxes
 	}
 
+	fmt.Println("Update database ...")
+
 	command.SaveNewEntries(servers)
+
+	fmt.Println("Done")
 }
