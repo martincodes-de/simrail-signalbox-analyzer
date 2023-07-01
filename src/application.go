@@ -23,7 +23,8 @@ func (a Application) Run() {
 	}
 	servers = logic.ConvertOpenServersToServer(openServers)
 
-	for _, server := range servers {
+	for index := range servers {
+		server := &servers[index]
 		signalboxes, signalboxErr := simrail_api.SignalboxesForServerQuery(server.Shortname)
 		if signalboxErr != nil {
 			log.Fatal(openServerErr)
